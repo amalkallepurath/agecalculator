@@ -9,55 +9,89 @@ const [months,setMonths] = useState(0);
 const [days,setDays] = useState(0);
 const[doberror,setdoberror]=useState(false)
 const handleSubmit = (e) => {
-
   e.preventDefault();
-  if(dob===null){
-   
-   setdoberror(true)
-  }
-  else{
-  setdoberror(false)
-  const birthDate=new Date(dob.toLocaleString())
 
+  if (!dob) {
+    setdoberror(true);
+    return;
+  }
+
+  setdoberror(false);
+
+  // Convert YYYY-MM-DD safely
+  const [year, month, day] = dob.split("-").map(Number);
+
+  const birthDate = new Date(year, month - 1, day);
   const today = new Date();
 
-  setDays(today.getDate())
-  const agecal=(today.getFullYear()-birthDate.getFullYear()); 
-  setMonths(today.getMonth()) ;
-  setYears(agecal-1)
- 
-  const birmonth=Number(birthDate.getMonth())+1;
- 
-  const todaymonth=Number(today.getMonth())+1;
- 
-  if(todaymonth<=birmonth && today.getDate()<=birthDate.getDate()){
-    /**before birthday */
-   
-    setAge(agecal-1)
-    const nextbirr=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+today.getFullYear()))
-    /*
-   const nextbir=new Date (String(birthDate.getDate()+"-"+Number((birthDate.getMonth())+1)+"-"+today.getFullYear()))*/
-   const nextbirdaydif=nextbirr-today;
-   const nextbirthdays=Math.floor((nextbirdaydif/1000/60/60/24)+1);
-   setNextBirthday(nextbirthdays)
-   
-    
+  // Calculate age
+  let ageYears = today.getFullYear() - birthDate.getFullYear();
+  let ageMonths = today.getMonth() - birthDate.getMonth();
+  let ageDays = today.getDate() - birthDate.getDate();
+
+  // Adjust days
+  if (ageDays < 0) {
+    ageMonths--;
+
+    const previousMonth = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      0
+    );
+
+    ageDays += previousMonth.getDate();
   }
-  else{
-    /**after birthday */
-   
-   setAge(agecal)
-   const nextbir=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+(Number(today.getFullYear())+1)))
-   /*
-   const nextbir=new Date (String(birthDate.getDate()+"-"+Number((birthDate.getMonth())+1)+"-"+(Number(today.getFullYear())+1)))
-   alert(nextbir)*/
-   const nextbirdaydif=nextbir-today;
-   const nextbirthdays=Math.floor((nextbirdaydif/1000/60/60/24)+1);
-   setNextBirthday(nextbirthdays)
-  
+
+  // Adjust months
+  if (ageMonths < 0) {
+    ageYears--;
+    ageMonths += 12;
   }
-}
-}
+
+  setYears(ageYears);
+  setMonths(ageMonths);
+  setDays(ageDays);
+  setAge(ageYears);
+
+  // Calculate next birthday
+  let nextBirthdayDate = new Date(
+    today.getFullYear(),
+    month - 1,
+    day
+  );
+
+  // Birthday has already happened
+  if (nextBirthdayDate <= today) {
+    nextBirthdayDate = new Date(
+      today.getFullYear() + 1,
+      month - 1,
+      day
+    );
+  }
+
+  // Remove time portion to avoid timezone/DST problems
+  const todayDateOnly = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  const nextBirthdayDateOnly = new Date(
+    nextBirthdayDate.getFullYear(),
+    nextBirthdayDate.getMonth(),
+    nextBirthdayDate.getDate()
+  );
+
+  const difference =
+    nextBirthdayDateOnly - todayDateOnly;
+
+  const nextBirthdays = Math.round(
+    difference / (1000 * 60 * 60 * 24)
+  );
+
+  setNextBirthday(nextBirthdays);
+};
+
   return (
     <div className='md:bg-indigo-500 bg-white h-[100vh] flex justify-center md:items-center'>
       <div className="bg-white  rounded-xl p-5 h-[450px] w-[400px]  flex justify-center ">
