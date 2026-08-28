@@ -12,7 +12,7 @@ const handleSubmit = (e) => {
 
   e.preventDefault();
   if(dob===null){
-   alert("jjj")
+   
    setdoberror(true)
   }
   else{
@@ -32,7 +32,7 @@ const handleSubmit = (e) => {
  
   if(todaymonth<=birmonth && today.getDate()<=birthDate.getDate()){
     /**before birthday */
-    alert("before birthday")
+   
     setAge(agecal-1)
     const nextbirr=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+today.getFullYear()))
     /*
@@ -45,7 +45,7 @@ const handleSubmit = (e) => {
   }
   else{
     /**after birthday */
-    alert("after birthday")
+   
    setAge(agecal)
    const nextbir=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+(Number(today.getFullYear())+1)))
    /*
