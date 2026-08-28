@@ -30,7 +30,7 @@ const handleSubmit = (e) => {
  
   const todaymonth=Number(today.getMonth())+1;
  
-  if(birmonth<=todaymonth){
+  if(birmonth<todaymonth){
    setAge(agecal)
    const nextbir=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+(Number(today.getFullYear())+1)))
    /*
