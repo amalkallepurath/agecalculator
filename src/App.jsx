@@ -30,7 +30,22 @@ const handleSubmit = (e) => {
  
   const todaymonth=Number(today.getMonth())+1;
  
-  if(birmonth<todaymonth){
+  if(todaymonth<=birmonth && today.getDate()<=birthDate.getDate()){
+    /**before birthday */
+    alert("before birthday")
+    setAge(agecal-1)
+    const nextbirr=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+today.getFullYear()))
+    /*
+   const nextbir=new Date (String(birthDate.getDate()+"-"+Number((birthDate.getMonth())+1)+"-"+today.getFullYear()))*/
+   const nextbirdaydif=nextbirr-today;
+   const nextbirthdays=Math.floor((nextbirdaydif/1000/60/60/24)+1);
+   setNextBirthday(nextbirthdays)
+   
+    
+  }
+  else{
+    /**after birthday */
+    alert("after birthday")
    setAge(agecal)
    const nextbir=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+(Number(today.getFullYear())+1)))
    /*
@@ -39,17 +54,7 @@ const handleSubmit = (e) => {
    const nextbirdaydif=nextbir-today;
    const nextbirthdays=Math.floor((nextbirdaydif/1000/60/60/24)+1);
    setNextBirthday(nextbirthdays)
-  }
-  else{
-    
-   setAge(agecal-1)
-    const nextbirr=new Date(String(Number((birthDate.getMonth())+1)+"-"+birthDate.getDate()+"-"+today.getFullYear()))
-    /*
-   const nextbir=new Date (String(birthDate.getDate()+"-"+Number((birthDate.getMonth())+1)+"-"+today.getFullYear()))*/
-   const nextbirdaydif=nextbirr-today;
-   const nextbirthdays=Math.floor((nextbirdaydif/1000/60/60/24)+1);
-   setNextBirthday(nextbirthdays)
-   
+  
   }
 }
 }
